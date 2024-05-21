@@ -1,0 +1,189 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $GitlinkUserConfigPage : Adw.NavigationPage {
+  title: "Welcome";
+  tag: "user_config";
+  can-pop: false;
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      show-title: false;
+    }
+
+    content: Gtk.ScrolledWindow {
+      Box {
+        orientation: vertical;
+        hexpand: true;
+        vexpand: true;
+        valign: center;
+        spacing: 16;
+        margin-start: 32;
+        margin-end: 32;
+        margin-bottom: 16;
+
+        Adw.Avatar {
+          icon-name: "avatar-default-symbolic";
+          size: 100;
+          margin-top: 32;
+        }
+
+        Label {
+          label: bind template.display_name;
+          styles ["title-1"]
+        }
+
+        Adw.PreferencesGroup {
+          title: "Git Configuration";
+          margin-top: 16;
+
+          // Adw.ActionRow {
+          //   title: "Signed In As";
+          //   subtitle: bind template.username;
+          //   styles ["property"]
+          // }
+
+          Adw.EntryRow {
+            title: "Display Name";
+            text: bind template.display_name bidirectional;
+            changed => $on_text_changed();
+            
+            [suffix]
+            Gtk.Button {
+              valign: center;
+              visible: bind template.user_name_ok inverted;
+              icon-name: "error-symbolic";
+              tooltip-text: "Must contain atleast 1 character";
+              styles ["error", "flat"]
+              clicked => $show_error();
+            }
+          }
+
+          Adw.EntryRow {
+            title: "Email";
+            text: bind template.email bidirectional;
+            changed => $on_text_changed();
+            
+            [suffix]
+            Gtk.Button {
+              valign: center;
+              visible: bind template.user_email_ok inverted;
+              icon-name: "error-symbolic";
+              tooltip-text: "Characters: ._-+~[a-z][A-Z][0-9] are only allowed. Exactly one @ character must be present.";
+              styles ["error", "flat"]
+              clicked => $show_error();
+            }
+          }
+
+          Adw.ActionRow {
+            title: "SSH Key";
+            subtitle: bind template.ssh_key;
+            // styles ["property"]
+
+            [suffix]
+            Gtk.Button {
+              valign: center;
+              visible: bind template.ssh_key_loading inverted;
+              label: "Configure";
+              tooltip-text: "Configure SSH Key";
+              clicked => $config_ssh();
+            }
+
+            [suffix]
+            Gtk.Button {
+              valign: center;
+              visible: bind template.ssh_key_ok inverted;
+              icon-name: "error-symbolic";
+              tooltip-text: "Configure SSH Key for Account Connectivity";
+              styles ["error", "flat"]
+              clicked => $show_error();
+            }
+
+            [suffix]
+            Gtk.Button {
+              valign: center;
+              visible: bind template.ssh_key_warning;
+              icon-name: "warning-symbolic";
+              tooltip-text: "Key is not in your account";
+              styles ["warning", "flat"]
+              clicked => $show_error();
+            }
+
+            [suffix]
+            Gtk.Spinner {
+              spinning: true;
+              margin-start: 8;
+              margin-end: 8;
+              visible: bind template.ssh_key_loading;
+            }
+          }
+        }
+
+        // Adw.PreferencesGroup {
+        //   title: "SSH Key Configuration";
+        //   margin-top: 16;
+
+        //   Adw.EntryRow {
+        //     title: "Key Name";
+        //     text: bind template.ssh_name;
+            
+        //     [suffix]
+        //     Gtk.Button {
+        //       valign: center;
+        //       visible: bind template.ssh_name_ok inverted;
+        //       icon-name: "error-symbolic";
+        //       tooltip-text: "Must contain atleast 5 characters. Characters: _-[a-z][A-Z][0-9] are only allowed. First character must not be - or [0-9]";
+        //       styles ["error", "flat"]
+        //       clicked => $show_error();
+        //     }
+        //   }
+
+        //   Adw.PasswordEntryRow {
+        //     title: "Password";
+        //     text: bind template.ssh_pass bidirectional;
+            
+        //     [suffix]
+        //     Gtk.Button {
+        //       valign: center;
+        //       visible: bind template.ssh_pass_ok inverted;
+        //       icon-name: "error-symbolic";
+        //       tooltip-text: "Must contain atleast 8 characters";
+        //       styles ["error", "flat"]
+        //       clicked => $show_error();
+        //     }
+        //   }
+
+        //   Adw.PasswordEntryRow {
+        //     title: "Confirm Password";
+            
+        //     [suffix]
+        //     Gtk.Button {
+        //       valign: center;
+        //       visible: bind template.ssh_pass_confirm inverted;
+        //       icon-name: "error-symbolic";
+        //       tooltip-text: "Must match both the passwords";
+        //       styles ["error", "flat"]
+        //       clicked => $show_error();
+        //     }
+        //   }
+        // }
+      }
+    };
+
+    [bottom]
+    Button {
+      margin-start: 16;
+      margin-end: 16;
+      margin-bottom: 8;
+      margin-top: 8;
+      clicked => $confirm();
+
+      sensitive: bind template.confirmable;
+      label: "Confirm";
+      halign: end;
+      hexpand: true;
+      styles ["pill", "suggested-action"]
+    }
+  }
+}

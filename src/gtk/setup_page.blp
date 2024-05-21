@@ -1,0 +1,136 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $GitlinkSetupPage: Adw.NavigationPage {
+  title: "Setup GitLink";
+  tag: "page2";
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      // show-title: false;
+    }
+
+    content: ScrolledWindow {
+      Adw.Clamp clamp {
+        vexpand: true;
+        valign: center;
+        margin-bottom: 16;
+        margin-top: 16;
+        margin-start: 32;
+        margin-end: 32;
+        maximum-size: 800;
+        tightening-threshold: 300;
+
+        Box {
+          orientation: vertical;
+          spacing: 8;
+
+          Image {
+            pixel-size: 200;
+            resource: "/com/asiet/lab/GitLink/assets/config.png";
+          }
+
+          Adw.PreferencesGroup {
+            title: "System Configurations";
+
+            // Adw.SwitchRow {
+            //   title: "Allow User Login";
+            //   visible: bind template.personal_type;
+            //   active: bind template.allow_login bidirectional;
+            //   icon-name: "person-symbolic";
+            // }
+
+            Adw.SwitchRow {
+              title: "Allow Multi User Login";
+              visible: bind template.personal_type;
+              active: bind template.allow_multi_user bidirectional;
+              icon-name: "people-symbolic";
+            }
+
+            Adw.EntryRow {
+              title: "Lab Name";
+              visible: bind template.lab_client_type;
+              text: bind template.lab_name bidirectional;
+              changed => $on_text_change();
+
+              [suffix]
+              Gtk.Button {
+                valign: center;
+                visible: bind template.lab_name_ok inverted;
+                icon-name: "error-symbolic";
+                tooltip-text: "Device Name must not be empty";
+                styles ["error", "flat"]
+                // clicked => $show_error();
+              }
+              
+              [prefix]
+              Image {
+                icon-name: "display-symbolic";
+                pixel-size: 16;
+              }
+            }
+
+            Adw.EntryRow {
+              title: "Device Name";
+              text: bind template.dev_name bidirectional;
+              changed => $on_text_change();
+
+              [suffix]
+              Gtk.Button {
+                valign: center;
+                visible: bind template.dev_name_ok inverted;
+                icon-name: "error-symbolic";
+                tooltip-text: "Lab Name must not be empty";
+                styles ["error", "flat"]
+                // clicked => $show_error();
+              }
+
+              [prefix]
+              Image {
+                icon-name: "display-symbolic";
+                pixel-size: 16;
+              }
+            }
+
+            Adw.EntryRow {
+              title: "Host IP Address";
+              visible: bind template.lab_client_type;
+              text: bind template.ip_addr bidirectional;
+              changed => $on_text_change();
+
+              [suffix]
+              Gtk.Button {
+                valign: center;
+                visible: bind template.ip_addr_ok inverted;
+                icon-name: "error-symbolic";
+                tooltip-text: "Invalid IPv4 address";
+                styles ["error", "flat"]
+                // clicked => $show_error();
+              }
+
+              [prefix]
+              Image {
+                icon-name: "network-server-symbolic";
+                pixel-size: 16;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    [bottom]
+    Button {
+      styles ["pill", "suggested-action"]
+      label: "Continue";
+      margin-bottom: 8;
+      margin-top: 8;
+      margin-start: 24;
+      margin-end: 24;
+      halign: end;
+      sensitive: bind template.continuable;
+      clicked => $next_page();
+    }
+  }
+}

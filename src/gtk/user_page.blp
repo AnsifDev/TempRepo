@@ -1,0 +1,218 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $GitlinkUserPage : Adw.NavigationPage {
+  tag: "homePage";
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar header {
+      show-title: false;
+      
+      [end]
+      Button {
+        icon-name: "settings-symbolic";
+        clicked => $preferences();
+      }
+      
+      [start]
+      Button {
+        icon-name: "application-exit-rtl-symbolic";
+        clicked => $logout();
+      }
+    }
+
+    [top]
+    Adw.Banner logout_banner {
+      title: "You are logged in on a lab machine";
+      button-label: "Logout";
+    }
+
+    content: ScrolledWindow {
+      Adw.Clamp {
+        margin-top: 32;
+        margin-start: 8;
+        margin-end: 8;
+        margin-bottom: 8;
+
+        Box {
+          orientation: vertical;
+          spacing: 8;
+
+          Adw.Avatar {
+            text: bind template.title;
+            size: 100;
+          }
+
+          Label {
+            margin-top: 8;
+            label: bind template.title;
+            styles ["title-1"]
+          }
+
+          Box {
+            orientation: horizontal;
+            spacing: 8;
+            hexpand: false;
+            halign: center;
+
+            $GitlinkDisplayCard { 
+              label: bind template.username;
+              focusable: false; 
+            }
+
+            $GitlinkDisplayCard { 
+              label: bind template.email;
+              focusable: false; 
+            }
+          }
+
+          Box {
+            orientation: horizontal;
+            spacing: 8;
+            hexpand: false;
+            halign: center;
+
+            $GitlinkDisplayCard {
+              label: bind template.followers_str;
+              focusable: false;
+            }
+            
+            $GitlinkDisplayCard {
+              label: bind template.following_str;
+              focusable: false;
+            }
+
+            $GitlinkDisplayCard {
+              label: "Github.com";
+              icon-name: "chain-link-symbolic";
+              clicked => $open_web();
+            }
+          }
+
+          Adw.PreferencesGroup downloaded {
+            margin-top: 16;
+            title: "Local Repositories";
+            visible: false;
+
+            [header-suffix]
+            Button {
+              Adw.ButtonContent {
+                icon-name: "list-add-symbolic";
+                label: "Clone New";
+              }
+
+              styles ["flat"]
+              tooltip-text: "Clone any repositories from your github account";
+              valign: center;
+              clicked => $clone_repo();
+            }
+
+            ListBox dw_repo_list {
+              styles["boxed-list"]
+              selection-mode: none;
+            }
+          }
+
+          // Adw.PreferencesGroup remote_repos {
+          //   margin-top: 16;
+          //   title: "Remote Repositories";
+          //   visible: false;
+
+          //   [header-suffix]
+          //   Button {
+          //     Adw.ButtonContent {
+          //       icon-name: "list-add-symbolic";
+          //       label: "Create New";
+          //     }
+
+          //     styles ["flat"]
+          //     tooltip-text: "Create new repository";
+          //     valign: center;
+          //     clicked => $create_new_repo();
+          //   }
+
+          //   ListBox remote_repo_list {
+          //     styles["boxed-list"]
+          //     selection-mode: none;
+          //   }
+          // }
+
+          // Adw.StatusPage data_fetch_error {
+          //   height-request: 300;
+          //   visible: false;
+          //   title: "Data Fetch Error";
+          //   description: "Looks like you have poor network connection or you are offline. Please make your connection stable and retry to load account data";
+          
+          //   Button {
+          //     margin-top: 8;
+          //     halign: center;
+
+          //     Adw.ButtonContent {
+          //       icon-name: "view-refresh-symbolic";
+          //       label: "Refresh";
+          //     }
+
+          //     styles ["pill", "suggested-action"]
+          //     tooltip-text: "Refresh the data";
+          //   }
+          // }
+
+          Adw.StatusPage empty_repos {
+            height-request: 250;
+            visible: false;
+            vexpand: true;
+            valign: center;
+            title: "Clone Repositories";
+            description: "There is no local repositories for your account. Add some to get started";
+          
+            Button {
+              margin-top: 8;
+              halign: center;
+
+              Adw.ButtonContent {
+                icon-name: "list-add-symbolic";
+                label: "Download";
+              }
+
+              clicked => $clone_repo();
+              styles ["pill", "suggested-action"]
+              tooltip-text: "Clone repositories from your account";
+            }
+          }
+
+          // Label {
+          //   margin-top: 48;
+          //   label: "Create New Repository";
+          //   visible: bind btn_create_new.visible;
+          //   halign: center;
+          //   styles ["title-3"]
+          // }
+
+          // Label {
+          //   visible: bind btn_create_new.visible;
+          //   label: "There is no repositories in your account. Add some to get started";
+          //   halign: center;
+          //   wrap: true;
+          //   natural-wrap-mode: word;
+          // }
+
+          // Button btn_create_new {
+          //   margin-top: 8;
+          //   halign: center;
+          //   visible: bind downloaded.visible inverted;
+
+          //   Adw.ButtonContent {
+          //     icon-name: "list-add-symbolic";
+          //     label: "Get Started";
+          //   }
+
+          //   styles ["pill", "suggested-action"]
+          //   tooltip-text: "Create new repository";
+          //   clicked => $create_new_repo();
+          // }
+        }
+      }
+    };
+  }
+}

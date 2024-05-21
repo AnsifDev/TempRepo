@@ -1,0 +1,136 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $GitlinkAuthenticationPage: Adw.NavigationPage {
+  title: "Add Account";
+  tag: "start";
+
+  Adw.ToastOverlay toast_overlay {
+    Adw.ToolbarView {
+      [top]
+      Adw.HeaderBar {
+        // show-title: false;
+      }
+
+      content: Box {
+        orientation: vertical;
+        hexpand: true;
+        vexpand: true;
+        valign: fill;
+        spacing: 16;
+        margin-start: 32;
+        margin-end: 32;
+        margin-bottom: 16;
+
+        Adw.Avatar {
+          icon-name: "avatar-default-symbolic";
+          size: 100;
+          margin-top: 64;
+        }
+
+        Label {
+          margin-top: 32;
+          label: "Connect with GitHub";
+          styles ["title-1"]
+        }
+
+        Label {
+          wrap: true;
+          halign: fill;
+          xalign: 0;
+          label: "Connect your Github Account with GitLink App to Access all your works and get things synced";
+        }
+
+        Label {
+          wrap: true;
+          halign: fill;
+          xalign: 0;
+          visible: bind btn_authorize.sensitive;
+          label: "Copy the user code below";
+        }
+
+        Gtk.Spinner {
+          spinning: bind btn_authorize.sensitive inverted;
+          visible: bind btn_authorize.sensitive inverted;
+          vexpand: true;
+          valign: center;
+        }
+
+        Adw.Bin {
+          styles ["my-small-frame"]
+          halign: center;
+          vexpand: true;
+          valign: center;
+          visible: bind btn_authorize.sensitive;
+          
+          Gtk.Box {
+            halign: start;
+            margin-top: 6;
+            margin-bottom: 6;
+            margin-start: 6;
+            margin-end: 6;
+            spacing: 6;
+
+            Label {
+              margin-start: 6;
+              halign: start;
+              label: bind template.user_code;
+            }
+
+            Button {
+              icon-name: "edit-copy-symbolic";
+              styles ["flat"]
+              clicked => $copy_code();
+            }
+          }
+        }
+      };
+
+    //   [bottom]
+    //   Box {
+    //     orientation: horizontal;
+    //     margin-start: 16;
+    //     margin-end: 16;
+    //     margin-top: 8;
+    //     margin-bottom: 8;
+    //     halign: end;
+
+    //     Button btn_authorize {
+    //       sensitive: false;
+    //       label: "Setting Up";
+    //       styles ["pill", "suggested-action"]
+    //       clicked => $authorize();
+    //     }
+    //   }
+      
+      [bottom]
+      Button btn_authorize {
+        margin-start: 16;
+        margin-end: 16;
+        margin-top: 8;
+        margin-bottom: 8;
+        halign: end;
+
+        sensitive: false;
+        clicked => $authorize();
+        styles ["pill", "suggested-action"]
+
+        Box {
+          orientation: horizontal;
+          spacing: 8;
+
+          Gtk.Spinner {
+            spinning: true;
+            visible: bind template.polling;
+          }
+          
+          Gtk.Label {
+            label: bind template.auth_label;
+          }
+        }
+      }
+    }
+
+    
+  }
+}

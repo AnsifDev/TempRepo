@@ -1,0 +1,112 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $GitlinkPreferencesDialog : Adw.PreferencesDialog {
+    search-enabled: true;
+    content-height: 600;
+    Adw.PreferencesPage {
+        icon-name: "user-home-symbolic";
+        name: "general";
+        title: "General";
+
+        Adw.PreferencesGroup {
+            title: "Global Configurations";
+            description: "Global configurations that applies to all user accounts";
+
+            Adw.SwitchRow {
+                title: "Allow Multi User Login";
+                visible: bind template.personal_type;
+                active: bind template.allow_multi_user bidirectional;
+                icon-name: "people-symbolic";
+            }
+
+            Adw.ActionRow {
+                title: "Lab Name";
+                visible: bind template.lab_client_type;
+                subtitle: bind template.lab_name;
+                activated => $change_lab_name();
+                activatable: true;
+                styles ["property"]
+
+                [suffix]
+                Image {
+                    icon-name: "document-edit-symbolic";
+                    pixel-size: 16;
+                    margin-start: 8;
+                    margin-end: 8;
+                }
+                
+                [prefix]
+                Image {
+                    icon-name: "display-symbolic";
+                    pixel-size: 16;
+                }
+            }
+
+            Adw.ActionRow {
+                title: "Device Name";
+                subtitle: bind template.dev_name;
+                activated => $change_dev_name();
+                activatable: true;
+                styles ["property"]
+
+                [suffix]
+                Image {
+                    icon-name: "document-edit-symbolic";
+                    pixel-size: 16;
+                    margin-start: 8;
+                    margin-end: 8;
+                }
+
+                [prefix]
+                Image {
+                    icon-name: "display-symbolic";
+                    pixel-size: 16;
+                }
+            }
+
+            Adw.ActionRow {
+                title: "Host IP Address";
+                visible: bind template.lab_client_type;
+                subtitle: bind template.ip_addr;
+                activated => $change_host_ip();
+                activatable: true;
+                styles ["property"]
+
+                [suffix]
+                Image {
+                    icon-name: "document-edit-symbolic";
+                    pixel-size: 16;
+                    margin-start: 8;
+                    margin-end: 8;
+                }
+
+                [prefix]
+                Image {
+                    icon-name: "network-server-symbolic";
+                    pixel-size: 16;
+                }
+            }
+
+            Adw.ActionRow {
+                title: "App Mode";
+                subtitle: bind template.app_mode_string;
+                styles ["property"]
+
+                [suffix]
+                Button {
+                    label: "Reset";
+                    valign: center;
+                    styles ["destructive-action"]
+                    clicked => $reset_app_mode();
+                }
+
+                [prefix]
+                Image {
+                    icon-name: "network-server-symbolic";
+                    pixel-size: 16;
+                }
+            }
+        }
+    }
+}

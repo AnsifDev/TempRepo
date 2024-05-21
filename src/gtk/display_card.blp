@@ -1,0 +1,25 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $GitlinkDisplayCard : Adw.Bin {
+  styles ["card"]
+  focusable: true;
+
+  Box {
+    margin-top: 4;
+    margin-bottom: 4;
+    margin-start: 12;
+    margin-end: 12;
+    spacing: 8;
+
+    Image icon {
+      icon-name: bind template.icon-name;
+      pixel-size: 16;
+    }
+
+    Label {
+      label: bind template.label;
+      styles ["caption"]
+    }
+  }
+}

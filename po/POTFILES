@@ -1,0 +1,6 @@
+data/com.asiet.lab.GitLink.desktop.in
+data/com.asiet.lab.GitLink.metainfo.xml.in
+data/com.asiet.lab.GitLink.gschema.xml
+src/main.vala
+src/window.vala
+src/window.ui
