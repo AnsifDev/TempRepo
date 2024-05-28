@@ -1,0 +1,25 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $GitlinkValueValidator : Adw.AlertDialog {
+    width-request: 250;
+    extra-child: Box {
+        orientation: vertical;
+        spacing: 12;
+
+        Adw.EntryRow {
+            title: "New Value";
+            text: bind template.value bidirectional;
+            changed => $on_text_changed();
+            styles ["card"]
+        }
+
+        Label {
+            visible: bind template.valid inverted;
+            label: bind template.error;
+            wrap: true;
+            xalign: 0;
+            styles ["error"]
+        }
+    };
+}

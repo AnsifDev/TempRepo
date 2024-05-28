@@ -1,0 +1,73 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $GitlinkRepoCloneDialog: Adw.Window {
+  default-width: 413;
+  default-height: 550;
+  width-request: 400;
+  height-request: 534;
+  resizable: false;
+  title: "Clone Repositories";
+
+  Adw.ToolbarView {
+    [top]
+    Adw.HeaderBar {
+      [start]
+      Gtk.ToggleButton search_btn {
+        icon-name: "system-search";
+        tooltip-text: "Start Search";
+      }
+    }
+
+    [top]
+    SearchBar search_bar {
+      search-mode-enabled: bind search_btn.active bidirectional;
+      key-capture-widget: template;
+      styles ["inline"]
+      SearchEntry acc_search_entry {
+        hexpand: true;
+        search-delay: 350;
+        activates-default: true;
+        placeholder-text: "Search Accounts";
+      }
+    }
+
+    content: Gtk.ScrolledWindow {
+      hscrollbar-policy: never;
+
+      Box {
+        orientation: vertical;
+        margin-bottom: 24;
+        margin-start: 24;
+        margin-end: 24;
+        margin-top: 24;
+        spacing: 40;
+
+        Image {
+          pixel-size: 200;
+          resource: "/com/asiet/lab/GitLink/assets/repo.png";
+        }
+
+        ListBox list_box {
+          styles["boxed-list"]
+          selection-mode: none;
+        }
+      }
+    };
+
+    [bottom]
+    Button {
+      sensitive: false;
+      halign: center;
+      margin-top: 8;
+      margin-bottom: 8;
+      styles ["pill", "suggested-action"]
+      // clicked => $create_new();
+
+      Adw.ButtonContent {
+        label: "Create New Repository";
+        icon-name: "list-add-symbolic";
+      }
+    }
+  }
+}

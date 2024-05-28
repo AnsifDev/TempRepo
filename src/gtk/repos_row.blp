@@ -1,0 +1,81 @@
+using Gtk 4.0;
+using Adw 1;
+
+template $GitlinkReposRow : Adw.ExpanderRow {
+  [prefix]
+  Image {
+    icon-name: "network-server-symbolic";
+  }
+
+  ListBoxRow {
+    activatable: false;
+    
+    Label {
+      margin-top: 8;
+      margin-start: 24;
+      margin-end: 8;
+      margin-bottom: 8;
+
+      focusable: false;
+      halign: start;
+      label: bind template.description;
+      wrap: true;
+
+      styles ["caption"]
+    }
+  }
+
+  ListBoxRow {
+    activatable: false;
+
+    Box {
+      margin-top: 8;
+      margin-start: 8;
+      margin-end: 8;
+      margin-bottom: 8;
+      
+      halign: end;
+      orientation: horizontal;
+      spacing: 8;
+
+      Button {
+        icon-name: "user-trash-symbolic";
+        visible: bind template.cloned;
+
+        tooltip-text: "Remove the Repository";
+        styles ["destructive-action"]
+      }
+
+      Button {
+        icon-name: "earth-symbolic";
+        visible: bind template.cloned;
+        clicked => $open_web();
+
+        tooltip-text: "Open In Web Browser";
+      }
+
+      Button {
+        visible: bind template.cloned;
+
+        Adw.ButtonContent {
+          label: "Open";
+          icon-name: "folder-open-symbolic";
+        }
+
+        tooltip-text: "Open Locally";
+      }
+
+      Button {
+        visible: bind template.cloned inverted;
+
+        Adw.ButtonContent {
+          label: "Clone Now";
+          icon-name: "list-add-symbolic";
+        }
+
+        tooltip-text: "Clone Repository";
+        styles ["suggested-action"]
+      }
+    }
+  }
+}
