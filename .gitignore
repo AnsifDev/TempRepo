@@ -1,8 +1,0 @@
-.flatpak
-_build
-.flatpak-builder
-.vscode
-src.old
-test.http
-*.old
-test.*

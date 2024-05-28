@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=GitLink
-Exec=gitlink
-Icon=com.asiet.lab.GitLink
-Terminal=false
-Type=Application
-Categories=GTK;
-StartupNotify=true
